@@ -11,7 +11,7 @@ class ProbabilityController extends Controller
 {
     public function index(Request $request)
     {
-        $types = Probability::with('leads')->get();
+        $types = Probability::with('leads')->withCount('leads')->get();
 
         return SuccessResource::collection($types);
     }

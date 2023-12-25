@@ -12,9 +12,7 @@ class MediaController extends Controller
 
     public function index(Request $request)
     {
-        $media = Media::with('leads')->when($request->has('type'), function ($query) use ($request) {
-            $query->where('type_id', $request->type);
-        })->get();
+        $media = Media::with('leads')->withCount('leads')->get();
 
         return SuccessResource::collection($media);
     }

@@ -11,9 +11,7 @@ class SourceController extends Controller
 {
     public function index(Request $request)
     {
-        $sources = Source::with('leads')->when($request->has('media'), function ($query) use ($request) {
-            $query->where('media_id', $request->media);
-        })->get();
+        $sources = Source::with('leads')->withCount('leads')->get();
 
         return SuccessResource::collection($sources);
     }
