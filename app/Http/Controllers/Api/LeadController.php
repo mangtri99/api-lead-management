@@ -7,6 +7,7 @@ use App\Http\Requests\LeadRequest;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Lead;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,8 @@ class LeadController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->per_page ? (int) $request->per_page : 10;
-        $queryDateStart = $request->date_start ? $request->start_date : null;
-        $queryDateEnd = $request->date_end ? $request->end_date : null;
+        $queryDateStart = $request->date_start ? Carbon::parse($request->date_start)->startOfDay() : null;
+        $queryDateEnd = $request->date_end ? Carbon::parse($request->date_end)->endOfDay() : null;
 
         $leads = Lead::when($request->search, function ($query) use ($request) {
             // Filter by search in fullname, email and lead number
