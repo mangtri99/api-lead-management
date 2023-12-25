@@ -11,6 +11,15 @@ class Media extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'channel_id',
+    ];
+
+    protected $casts = [
+        'channel_id' => 'integer',
+    ];
+
     /**
      * Get all of the leads for the Media
      *

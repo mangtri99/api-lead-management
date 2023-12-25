@@ -11,6 +11,15 @@ class Source extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'media_id',
+    ];
+
+    protected $casts = [
+        'media_id' => 'integer',
+    ];
+
     /**
      * Get all of the leads for the Source
      *

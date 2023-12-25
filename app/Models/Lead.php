@@ -29,6 +29,16 @@ class Lead extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'branch_id' => 'integer',
+        'source_id' => 'integer',
+        'type_id' => 'integer',
+        'status_id' => 'integer',
+        'channel_id' => 'integer',
+        'media_id' => 'integer',
+        'probability_id' => 'integer',
+    ];
+
     /**
      * Get the source that owns the Lead
      *
