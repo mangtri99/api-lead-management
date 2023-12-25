@@ -85,6 +85,15 @@ class LeadController extends Controller
     public function show(Lead $lead)
     {
         try {
+            $lead = $lead->load([
+                'branch',
+                'status',
+                'probability',
+                'type',
+                'channel',
+                'media',
+                'source',
+            ]);
             return new SuccessResource($lead);
         } catch (Exception $e) {
             return response()->json(
