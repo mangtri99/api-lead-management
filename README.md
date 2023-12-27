@@ -1,10 +1,10 @@
-## API TEST LEAD MANAGEMENT
+## API LEAD MANAGEMENT
 This is a simple project API for Lead Management
 ### Requirement
 
  - PHP version 8.1
  - Postman 
- - Database MySQL
+ - Database MySQL 5.7
 
 ### How to get started?
 After clone this project,

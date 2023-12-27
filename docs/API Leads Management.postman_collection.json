@@ -1,0 +1,1130 @@
+{
+	"info": {
+		"_postman_id": "9e944331-c6fe-4eff-a8a0-ee3ebf892dd4",
+		"name": "API Leads Management",
+		"description": "# Documentation API Leads Management\n\nThis documentation outlines the usage of the CRUD API for managing resources.\n\n## Introduction\n\nThis is a simple CRUD API allow you to do operation Create, Read, Update, and Delete resources. This API follow RESTful principles and supports the standard HTTP methods for performing these operations.\n\n`BASE_URL =` [<code>http://localhost:8000/api</code>](http://localhost:8000)\n\n## API Endpoints\n\n| Operation | **Method** | Path | **Description** |\n| --- | --- | --- | --- |\n| Create | POST | /lead | create a new resource lead |\n| Read(Single) | GET | /lead/{id} | get a single resource lead |\n| Read(All) | GET | /lead | get a list of all resource lead |\n| Update | PUT | /lead/{id} | update an existing resource lead by ID |\n| Delete | DELETE | /lead/{id} | delete a resource lead by ID |\n\n1. Read(All) `/lead` \\[GET\\]\n    \n\n| **Params** | **Type** | **Required** | **default** | **Description** |\n| --- | --- | --- | --- | --- |\n| search | string | NO |  | filter list lead by search like lead_number or fullname or email |\n| sort | string | NO | created_at | sort by column |\n| order | string | NO | desc | set order by ascending/descending |\n| page | number | NO | 1 | current page pagination |\n| per_page | number | NO | 10 | show limit data return |\n| all | boolean | NO | false | show all leads, remove pagination |\n| branch | number | NO |  | filter by branch_id |\n| status | number | NO |  | filter by status_id |\n| date_start | string | NO |  | filter by created_at, show more than specified date |\n| date_end | string | NO |  | filter by created_at, show less than specified date |\n\n2\\. Read (single) `/user/{id}` \\[GET\\]\n\n| **Params** | **Type** | **Required** | **Default** | **Description** |\n| --- | --- | --- | --- | --- |\n| id | string | YES |  | retrive a single data by id |\n\n3\\. Store \\[POST\\] and Update \\[PATCH\\] `/user`\n\n| **Params** | **Type** | **Required** | **Default** | **Description** |\n| --- | --- | --- | --- | --- |\n| name | string | YES |  | minimum length 2 |\n| email | string | YES |  | must valid email, unique |\n| password | string | YES |  |  |\n\n4\\. Delete /user/{id} \\[DELETE\\]\n\n| **Params** | **Type** | **Required** | **Default** | **Description** |\n| --- | --- | --- | --- | --- |\n| id | string | YES |  | delete data by id |\n\n## Master Data\n\n| **Master Data** | **Method** | **Path** | **Description** |\n| --- | --- | --- | --- |\n| Type | GET | /type | Show all data of types table |\n| Status | GET | /status | Show all data of statuses table |\n| Probability | GET | /probability | Show all data of probabilities table |\n| Channel | GET | /channel | Show all data of channels table |\n| Media | GET | /media | Show all data of media table |\n| Source | GET | /source | Show all data of sources table |\n\nAll master data has same params\n\n| **Params** | **Type** | **Required** | **Default** | **Description** |\n| --- | --- | --- | --- | --- |\n| leads | boolean | NO | false | Show leads by master data |\n\n# Request Format\n\nAll requests to the API should use JSON as the request body content type.\n\n#### Request Headers\n\n- Content-Type: application/json\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"field1\": \"some value\",\n  \"field2\": \"some value 2\"\n}\n\n ```\n\n## Response Format\n\nAll responses from the API are in JSON format.\n\nResponse Structure\n\n- message: description of result\n- data: resource data\n- error: description of error message, return when request fail\n    \n\n#### Example Response Success\n\nStatus code: 200\n\n``` json\n{\n    \"data\": {\n        \"branch_id\": 1,\n        \"status_id\": 5,\n        \"probability_id\": 2,\n        \"type_id\": 1,\n        \"channel_id\": 3,\n        \"media_id\": 14,\n        \"source_id\": 8,\n        \"fullname\": \"Mang Tri\",\n        \"email\": \"mangtri93@gmail.com\",\n        \"phone_number\": \"089123456789\",\n        \"address\": \"Jalan Nangka\",\n        \"latitude\": \"-8.793974\",\n        \"longitude\": \"-54.968626\",\n        \"company_name\": \"PT GlobalExtreme\",\n        \"notes\": \"My Notes\",\n        \"lead_number\": \"MA1703649984\",\n        \"updated_at\": \"2023-12-27T04:06:24.000000Z\",\n        \"created_at\": \"2023-12-27T04:06:24.000000Z\",\n        \"id\": 101\n    }\n}\n\n ```\n\n#### Example Response Error\n\nStatus code: 4**\n\n``` json\n{\n    \"message\": \"The email has already been taken. (and 1 more error)\",\n    \"errors\": {\n        \"email\": [\n            \"The email has already been taken.\"\n        ],\n        \"phone_number\": [\n            \"The phone number has already been taken.\"\n        ]\n    }\n}\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8515974"
+	},
+	"item": [
+		{
+			"name": "Leads",
+			"item": [
+				{
+					"name": "GET",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/lead",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"lead"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Filter by lead_number, fullname, or email",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "asc",
+									"description": "Sort ASC or DESC",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "created_at",
+									"description": "Order by column",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Show data by page pagination, works on pagination",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "Show maximum data for each page pagination, works on pagination",
+									"disabled": true
+								},
+								{
+									"key": "all",
+									"value": "false",
+									"description": "Show all data leads, remove pagination",
+									"disabled": true
+								},
+								{
+									"key": "branch",
+									"value": null,
+									"description": "Filter leads by branch",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "filter leads by status",
+									"disabled": true
+								},
+								{
+									"key": "date_start",
+									"value": null,
+									"description": "filter leads by created_at, more than specified date",
+									"disabled": true
+								},
+								{
+									"key": "date_end",
+									"value": null,
+									"description": "filter leads by created_at, less than specified date",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Gets all of your [collections](https://www.getpostman.com/docs/collections). The response includes all of your subscribed collections."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/lead",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "",
+											"description": "Optional. A workspace ID.",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "per_page",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "all",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "branch",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "date_start",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "date_end",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"branch_id\": 5,\n            \"status_id\": 8,\n            \"probability_id\": 3,\n            \"type_id\": 2,\n            \"channel_id\": 2,\n            \"media_id\": 12,\n            \"source_id\": null,\n            \"lead_number\": \"FN42802099\",\n            \"fullname\": \"Dr. Freeman Klocko\",\n            \"email\": \"aylin05@example.org\",\n            \"phone_number\": \"(586) 340-7463\",\n            \"address\": \"55169 Halvorson Plaza\\nNew Fay, AZ 71424-7402\",\n            \"latitude\": \"63.900837\",\n            \"longitude\": \"151.902789\",\n            \"company_name\": \"O'Conner-Smith\",\n            \"notes\": \"Cum eaque dolor aut exercitationem dolores aliquid cupiditate. Temporibus facere voluptas deleniti non fugit magni. Sunt enim aut soluta facere.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 5,\n                \"name\": \"GlobalXtreme Samarinda\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 8,\n                \"name\": \"Not Response\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 3,\n                \"name\": \"Cancel\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"Walk-ins\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 12,\n                \"name\": \"Branch Samarinda\",\n                \"channel_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        },\n        {\n            \"id\": 4,\n            \"branch_id\": 5,\n            \"status_id\": 6,\n            \"probability_id\": 3,\n            \"type_id\": 2,\n            \"channel_id\": 2,\n            \"media_id\": 11,\n            \"source_id\": null,\n            \"lead_number\": \"HY48790539\",\n            \"fullname\": \"Dawson Hilpert\",\n            \"email\": \"albertha.reilly@example.net\",\n            \"phone_number\": \"+1-657-463-2436\",\n            \"address\": \"5375 McClure Overpass Apt. 421\\nHackettfort, UT 91197\",\n            \"latitude\": \"-38.881404\",\n            \"longitude\": \"30.244001\",\n            \"company_name\": \"Okuneva-Mertz\",\n            \"notes\": \"Eos ut cupiditate atque distinctio illo eos et. Temporibus quas repellat saepe sed rerum facilis voluptate. Maxime deleniti et enim expedita. Alias adipisci voluptatum facere vel vitae nesciunt.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 5,\n                \"name\": \"GlobalXtreme Samarinda\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 6,\n                \"name\": \"NI - Not Interested\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 3,\n                \"name\": \"Cancel\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"Walk-ins\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 11,\n                \"name\": \"Branch Balikpapan\",\n                \"channel_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        },\n        {\n            \"id\": 5,\n            \"branch_id\": 2,\n            \"status_id\": 4,\n            \"probability_id\": 1,\n            \"type_id\": 2,\n            \"channel_id\": 3,\n            \"media_id\": 14,\n            \"source_id\": 12,\n            \"lead_number\": \"XW78315378\",\n            \"fullname\": \"Llewellyn McKenzie\",\n            \"email\": \"krunte@example.net\",\n            \"phone_number\": \"1-215-573-7717\",\n            \"address\": \"98709 Kuhlman Tunnel Suite 129\\nLake Kristoferside, PA 10073-1827\",\n            \"latitude\": \"-19.457136\",\n            \"longitude\": \"-94.890979\",\n            \"company_name\": \"Hammes Ltd\",\n            \"notes\": \"Sed ipsa et dolor ipsam architecto praesentium. Nihil ut voluptatem dignissimos quo et aut sequi. Consequatur quisquam temporibus soluta et quibusdam quia ex. Nesciunt et iusto nulla fugit vel.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 2,\n                \"name\": \"GlobalXtreme Malang\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 4,\n                \"name\": \"FCB - Future Call Back\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 1,\n                \"name\": \"Pending\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 3,\n                \"name\": \"Marketing Channels\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 14,\n                \"name\": \"Digital Platform\",\n                \"channel_id\": 3,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": {\n                \"id\": 12,\n                \"name\": \"Meta Ads\",\n                \"media_id\": 14,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            }\n        },\n        {\n            \"id\": 6,\n            \"branch_id\": 3,\n            \"status_id\": 9,\n            \"probability_id\": 1,\n            \"type_id\": 2,\n            \"channel_id\": 2,\n            \"media_id\": 12,\n            \"source_id\": null,\n            \"lead_number\": \"BF89587065\",\n            \"fullname\": \"Natasha Buckridge II\",\n            \"email\": \"timothy91@example.org\",\n            \"phone_number\": \"737-765-2378\",\n            \"address\": \"197 Murazik Pine Suite 672\\nErdmanton, NC 68932\",\n            \"latitude\": \"-18.322918\",\n            \"longitude\": \"-0.850455\",\n            \"company_name\": \"Heller LLC\",\n            \"notes\": \"Non reprehenderit temporibus at rerum. Dolorem et repellendus fugiat culpa. Qui quidem et non. Atque est natus sed aut natus eligendi. Aut voluptatem sed esse.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 3,\n                \"name\": \"GlobalXtreme Jakarta\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 9,\n                \"name\": \"Pending\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 1,\n                \"name\": \"Pending\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"Walk-ins\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 12,\n                \"name\": \"Branch Samarinda\",\n                \"channel_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        },\n        {\n            \"id\": 7,\n            \"branch_id\": 4,\n            \"status_id\": 7,\n            \"probability_id\": 3,\n            \"type_id\": 1,\n            \"channel_id\": 1,\n            \"media_id\": 1,\n            \"source_id\": 2,\n            \"lead_number\": \"HA49004054\",\n            \"fullname\": \"Anastacio Wolf DVM\",\n            \"email\": \"vgreenholt@example.net\",\n            \"phone_number\": \"+1.910.495.8420\",\n            \"address\": \"2560 Sage Course Apt. 122\\nPort Greysonview, MS 16391\",\n            \"latitude\": \"-57.241851\",\n            \"longitude\": \"81.29399\",\n            \"company_name\": \"Bruen PLC\",\n            \"notes\": \"Odit aut eos ut. Aut quod est non eligendi exercitationem enim. Ab illo placeat ullam ut atque ea blanditiis.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 4,\n                \"name\": \"GlobalXtreme Balikpapan\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 7,\n                \"name\": \"Out Coverage\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 3,\n                \"name\": \"Cancel\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Inbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"Official Channels\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 1,\n                \"name\": \"WA Center\",\n                \"channel_id\": 1,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": {\n                \"id\": 2,\n                \"name\": \"Customer Support\",\n                \"media_id\": 1,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            }\n        },\n        {\n            \"id\": 8,\n            \"branch_id\": 3,\n            \"status_id\": 4,\n            \"probability_id\": 2,\n            \"type_id\": 1,\n            \"channel_id\": 3,\n            \"media_id\": 13,\n            \"source_id\": null,\n            \"lead_number\": \"WE77550707\",\n            \"fullname\": \"Mrs. Meda Harber III\",\n            \"email\": \"ylarkin@example.net\",\n            \"phone_number\": \"848-699-7968\",\n            \"address\": \"9953 McKenzie Plain Suite 754\\nZeldamouth, CO 32086-2497\",\n            \"latitude\": \"-31.07731\",\n            \"longitude\": \"-97.937356\",\n            \"company_name\": \"Padberg LLC\",\n            \"notes\": \"Aut ea nihil omnis officiis. Illo et vel voluptatem sint non. Est repellat maxime magni sequi distinctio.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 3,\n                \"name\": \"GlobalXtreme Jakarta\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 4,\n                \"name\": \"FCB - Future Call Back\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 2,\n                \"name\": \"Converted\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Inbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 3,\n                \"name\": \"Marketing Channels\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 13,\n                \"name\": \"Open Booth\",\n                \"channel_id\": 3,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        },\n        {\n            \"id\": 9,\n            \"branch_id\": 4,\n            \"status_id\": 4,\n            \"probability_id\": 2,\n            \"type_id\": 2,\n            \"channel_id\": 2,\n            \"media_id\": 8,\n            \"source_id\": null,\n            \"lead_number\": \"EC32737193\",\n            \"fullname\": \"Mr. Derek West V\",\n            \"email\": \"unicolas@example.org\",\n            \"phone_number\": \"+1-361-722-4431\",\n            \"address\": \"5182 Hackett Loop\\nBartonstad, VT 26008\",\n            \"latitude\": \"-33.095319\",\n            \"longitude\": \"64.987761\",\n            \"company_name\": \"Kemmer Inc\",\n            \"notes\": \"Hic dicta corporis ea sed. Molestiae quod quo neque error aspernatur illum. Ducimus sit et ab dignissimos et nostrum assumenda.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 4,\n                \"name\": \"GlobalXtreme Balikpapan\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 4,\n                \"name\": \"FCB - Future Call Back\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 2,\n                \"name\": \"Converted\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"Walk-ins\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 8,\n                \"name\": \"Branch Badung\",\n                \"channel_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        },\n        {\n            \"id\": 10,\n            \"branch_id\": 3,\n            \"status_id\": 8,\n            \"probability_id\": 3,\n            \"type_id\": 1,\n            \"channel_id\": 1,\n            \"media_id\": 1,\n            \"source_id\": 1,\n            \"lead_number\": \"QN55547385\",\n            \"fullname\": \"Diego Stroman\",\n            \"email\": \"bspencer@example.org\",\n            \"phone_number\": \"+1.629.498.2597\",\n            \"address\": \"268 Rodriguez Pine Suite 916\\nLake Tressie, HI 36875\",\n            \"latitude\": \"-50.772569\",\n            \"longitude\": \"133.489728\",\n            \"company_name\": \"Hudson-Cruickshank\",\n            \"notes\": \"Itaque accusantium omnis eum. Necessitatibus et eum labore dolor et dolorem quasi.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 3,\n                \"name\": \"GlobalXtreme Jakarta\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 8,\n                \"name\": \"Not Response\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 3,\n                \"name\": \"Cancel\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Inbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"Official Channels\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 1,\n                \"name\": \"WA Center\",\n                \"channel_id\": 1,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": {\n                \"id\": 1,\n                \"name\": \"Sales\",\n                \"media_id\": 1,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            }\n        },\n        {\n            \"id\": 11,\n            \"branch_id\": 2,\n            \"status_id\": 6,\n            \"probability_id\": 3,\n            \"type_id\": 2,\n            \"channel_id\": 1,\n            \"media_id\": 2,\n            \"source_id\": 4,\n            \"lead_number\": \"WF90011323\",\n            \"fullname\": \"Abner Waters\",\n            \"email\": \"retta.jacobs@example.org\",\n            \"phone_number\": \"660-642-8584\",\n            \"address\": \"7890 Reece Pines Suite 036\\nJocelynshire, MD 58952\",\n            \"latitude\": \"35.66108\",\n            \"longitude\": \"-36.503446\",\n            \"company_name\": \"Kovacek, Okuneva and Schneider\",\n            \"notes\": \"Sed velit et error ut. Reiciendis et vero adipisci maiores tempora itaque qui. Corrupti omnis reiciendis placeat nisi voluptas aut provident. Esse et perferendis nihil amet natus.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 2,\n                \"name\": \"GlobalXtreme Malang\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 6,\n                \"name\": \"NI - Not Interested\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 3,\n                \"name\": \"Cancel\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Outbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 1,\n                \"name\": \"Official Channels\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 2,\n                \"name\": \"Call\",\n                \"channel_id\": 1,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": {\n                \"id\": 4,\n                \"name\": \"Customer Support\",\n                \"media_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            }\n        },\n        {\n            \"id\": 12,\n            \"branch_id\": 5,\n            \"status_id\": 3,\n            \"probability_id\": 1,\n            \"type_id\": 1,\n            \"channel_id\": 2,\n            \"media_id\": 9,\n            \"source_id\": null,\n            \"lead_number\": \"XF13129134\",\n            \"fullname\": \"Selmer VonRueden\",\n            \"email\": \"hollis.schneider@example.com\",\n            \"phone_number\": \"984-206-2155\",\n            \"address\": \"5615 Brady Glen\\nNew Isaac, WA 88256\",\n            \"latitude\": \"-19.858686\",\n            \"longitude\": \"83.249408\",\n            \"company_name\": \"Nienow PLC\",\n            \"notes\": \"Et ut sed repellendus non consequatur. Delectus harum accusamus quia quia est qui. Nam enim et et porro eum.\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"branch\": {\n                \"id\": 5,\n                \"name\": \"GlobalXtreme Samarinda\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"status\": {\n                \"id\": 3,\n                \"name\": \"Junk/Trash\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"probability\": {\n                \"id\": 1,\n                \"name\": \"Pending\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Inbound\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"channel\": {\n                \"id\": 2,\n                \"name\": \"Walk-ins\",\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"media\": {\n                \"id\": 9,\n                \"name\": \"Branch Denpasar\",\n                \"channel_id\": 2,\n                \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n                \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n            },\n            \"source\": null\n        }\n    ],\n    \"links\": {\n        \"first\": \"https://api-lead.finitree.online/api/lead?page=1\",\n        \"last\": \"https://api-lead.finitree.online/api/lead?page=10\",\n        \"prev\": null,\n        \"next\": \"https://api-lead.finitree.online/api/lead?page=2\"\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 10,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=2\",\n                \"label\": \"2\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=3\",\n                \"label\": \"3\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=4\",\n                \"label\": \"4\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=5\",\n                \"label\": \"5\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=6\",\n                \"label\": \"6\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=7\",\n                \"label\": \"7\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=8\",\n                \"label\": \"8\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=9\",\n                \"label\": \"9\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=10\",\n                \"label\": \"10\",\n                \"active\": false\n            },\n            {\n                \"url\": \"https://api-lead.finitree.online/api/lead?page=2\",\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"https://api-lead.finitree.online/api/lead\",\n        \"per_page\": 10,\n        \"to\": 10,\n        \"total\": 98\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "DETAIL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/lead/10",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"lead",
+								"10"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Gets information about a collection. For a complete list of this endpoint's possible values, use the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json)."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/lead/10",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"10"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 10,\n        \"branch_id\": 3,\n        \"status_id\": 8,\n        \"probability_id\": 3,\n        \"type_id\": 1,\n        \"channel_id\": 1,\n        \"media_id\": 1,\n        \"source_id\": 1,\n        \"lead_number\": \"QN55547385\",\n        \"fullname\": \"Diego Stroman\",\n        \"email\": \"bspencer@example.org\",\n        \"phone_number\": \"+1.629.498.2597\",\n        \"address\": \"268 Rodriguez Pine Suite 916\\nLake Tressie, HI 36875\",\n        \"latitude\": \"-50.772569\",\n        \"longitude\": \"133.489728\",\n        \"company_name\": \"Hudson-Cruickshank\",\n        \"notes\": \"Itaque accusantium omnis eum. Necessitatibus et eum labore dolor et dolorem quasi.\",\n        \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n        \"updated_at\": \"2023-12-25T10:06:48.000000Z\",\n        \"branch\": {\n            \"id\": 3,\n            \"name\": \"GlobalXtreme Jakarta\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"status\": {\n            \"id\": 8,\n            \"name\": \"Not Response\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"probability\": {\n            \"id\": 3,\n            \"name\": \"Cancel\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"type\": {\n            \"id\": 1,\n            \"name\": \"Inbound\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"channel\": {\n            \"id\": 1,\n            \"name\": \"Official Channels\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"media\": {\n            \"id\": 1,\n            \"name\": \"WA Center\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        \"source\": {\n            \"id\": 1,\n            \"name\": \"Sales\",\n            \"media_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/lead/1000",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"1000"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Lead] 1000\"\n}"
+						}
+					]
+				},
+				{
+					"name": "CREATE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 8,\n    \"notes\": \"My Notes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/lead",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"lead"
+							]
+						},
+						"description": "Creates a collection using the [Postman Collection v2 schema format](https://schema.postman.com/json/collection/v2.1.0/docs/index.html). Include a `collection` object in the request body that contains the following required properties:\n\n*   `info` — An **object** that contains the following properties:\n    *   `name` — A **string** value that contains the collection's name.\n    *   `schema` — A **string** that contains a URL to the collection's schema. For example, the `https://schema.getpostman.com/collection/v1` URL.\n*   `item` — An **object** that contains the HTTP request and response information.\n    *   `request` — An **object** that contains the collection's request information. For a complete list of values, refer to the `definitions.request` entry in the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json). If you pass an empty object for this value, the system defaults to an untitled GET request.\n\n**Note:**\n\n*   For a complete list of available property values for this endpoint, use the following references available in the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json):\n    *   `info` object — Use the `definitions.info` entry.\n    *   `item` object — Use the `definitions.items` entry.\n*   For all other possible values, refer to the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json)."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 8,\n    \"notes\": \"My Notes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_base_url}}/lead",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"branch_id\": 1,\n        \"status_id\": 5,\n        \"probability_id\": 2,\n        \"type_id\": 1,\n        \"channel_id\": 3,\n        \"media_id\": 14,\n        \"source_id\": 8,\n        \"fullname\": \"Mang Tri\",\n        \"email\": \"mangtri93@gmail.com\",\n        \"phone_number\": \"089123456789\",\n        \"address\": \"Jalan Nangka\",\n        \"latitude\": \"-8.793974\",\n        \"longitude\": \"-54.968626\",\n        \"company_name\": \"PT GlobalExtreme\",\n        \"notes\": \"My Notes\",\n        \"lead_number\": \"MA1703649984\",\n        \"updated_at\": \"2023-12-27T04:06:24.000000Z\",\n        \"created_at\": \"2023-12-27T04:06:24.000000Z\",\n        \"id\": 101\n    }\n}"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 8,\n    \"notes\": \"My Notes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_base_url}}/lead",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The email has already been taken. (and 1 more error)\",\n    \"errors\": {\n        \"email\": [\n            \"The email has already been taken.\"\n        ],\n        \"phone_number\": [\n            \"The phone number has already been taken.\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "UPDATE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri Edit\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka Utara\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 9,\n    \"notes\": \"Something write here\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base_url}}/lead/10",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"lead",
+								"10"
+							]
+						},
+						"description": "Updates a collection using the [Postman Collection v2 schema format](https://schema.postman.com/json/collection/v2.1.0/docs/index.html). Include a `collection` object in the request body that contains the following required properties:\n\n- `info` — An **object** that contains the following properties:\n    - `name` — A **string** value that contains the collection's name.\n    - `schema` — A **string** that contains a URL to the collection's schema. For example, the `https://schema.getpostman.com/collection/v1` URL.\n- `item` — An **object** that contains the HTTP request and response information.\n    - `request` — An **object** that contains the collection's request information. For a complete list of values, refer to the `definitions.request` entry in the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json). If you pass an empty object for this value, the system defaults to an untitled GET request.\n\n**Note:**\n\n- For a complete list of available property values for this endpoint, use the following references available in the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json):\n    - `info` object — Use the `definitions.info` entry.\n    - `item` object — Use the `definitions.items` entry.\n- For all other possible values, refer to the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json).\n    \n\n### Important\n\nUse caution when using this endpoint. The system will replace the existing collection with the values passed in the request body."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri Edit\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka Utara\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 9,\n    \"notes\": \"Something write here\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_base_url}}/lead/10",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"10"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": []\n}"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"branch_id\": 1,\n    \"fullname\": \"Mang Tri Edit\",\n    \"company_name\": \"PT GlobalExtreme\",\n    \"address\": \"Jalan Nangka Utara\",\n    \"email\": \"mangtri93@gmail.com\",\n    \"phone_number\": \"089123456789\",\n    \"latitude\": \"-8.793974\",\n    \"longitude\": \"-54.968626\",\n    \"status_id\": 5,\n    \"probability_id\": 2,\n    \"type_id\": 1,\n    \"channel_id\": 3,\n    \"media_id\": 14,\n    \"source_id\": 9,\n    \"notes\": \"Something write here\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_base_url}}/lead/10",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"10"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The email has already been taken. (and 1 more error)\",\n    \"errors\": {\n        \"email\": [\n            \"The email has already been taken.\"\n        ],\n        \"phone_number\": [\n            \"The phone number has already been taken.\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "DELETE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/lead/11",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"lead",
+								"11"
+							]
+						},
+						"description": "Deletes a collection."
+					},
+					"response": [
+						{
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/lead/11",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"11"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": []\n}"
+						},
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/lead/1000",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"lead",
+										"1000"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Lead] 11\"\n}"
+						}
+					]
+				}
+			],
+			"description": "The API CRUD for handling Leads, here the list of API\n\n- Get All Leads\n    \n- Get One Leads\n    \n- Create a Leads\n    \n- Update a Leads\n    \n- Delete a Leads"
+		},
+		{
+			"name": "Master Data",
+			"item": [
+				{
+					"name": "Type",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/type",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"type"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each type",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/type",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"type"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Inbound\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Outbound\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Status",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/status",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"status"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each status",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/status",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"status"
+									],
+									"query": [
+										{
+											"key": "leads",
+											"value": "true",
+											"description": "Show leads for each status",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Consideration\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Scheduled\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Junk/Trash\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"FCB - Future Call Back\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Qualified\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"NI - Not Interested\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Out Coverage\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Not Response\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Pending\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Cancel\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Probability",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/probability",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"probability"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each probability",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/probability",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"probability"
+									],
+									"query": [
+										{
+											"key": "leads",
+											"value": "true",
+											"description": "Show leads for each probability",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Pending\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Converted\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Cancel\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Channel",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/channel",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"channel"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each channel",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/channel",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"channel"
+									],
+									"query": [
+										{
+											"key": "leads",
+											"value": "true",
+											"description": "Show leads for each channel",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Official Channels\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Walk-ins\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Marketing Channels\",\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Media",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/media",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"media"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each media",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/media",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"media"
+									],
+									"query": [
+										{
+											"key": "leads",
+											"value": "true",
+											"description": "Show leads for each media",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"WA Center\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Call\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Website\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Email\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Whatsapp Blast\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Referal\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"OOH\",\n            \"channel_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Branch Badung\",\n            \"channel_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Branch Denpasar\",\n            \"channel_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Branch Malang\",\n            \"channel_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 11,\n            \"name\": \"Branch Balikpapan\",\n            \"channel_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 12,\n            \"name\": \"Branch Samarinda\",\n            \"channel_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 13,\n            \"name\": \"Open Booth\",\n            \"channel_id\": 3,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 14,\n            \"name\": \"Digital Platform\",\n            \"channel_id\": 3,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Source",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/source",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"source"
+							],
+							"query": [
+								{
+									"key": "leads",
+									"value": "true",
+									"description": "Show leads for each source",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_base_url}}/source",
+									"host": [
+										"{{api_base_url}}"
+									],
+									"path": [
+										"source"
+									],
+									"query": [
+										{
+											"key": "leads",
+											"value": "true",
+											"description": "Show leads for each source",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Sales\",\n            \"media_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Customer Support\",\n            \"media_id\": 1,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Sales\",\n            \"media_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Customer Support\",\n            \"media_id\": 2,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Tawk to\",\n            \"media_id\": 3,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Lead From\",\n            \"media_id\": 3,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Google Business\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Facebook\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Instagram\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Google Ads\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 11,\n            \"name\": \"Tiktok\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        },\n        {\n            \"id\": 12,\n            \"name\": \"Meta Ads\",\n            \"media_id\": 14,\n            \"created_at\": \"2023-12-25T10:06:48.000000Z\",\n            \"updated_at\": \"2023-12-25T10:06:48.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "This is API for return master data, here the list of API\n\n- Leads Status\n- Leads Probailty\n- Leads Type\n- Leads Channel\n- Leads Media\n- Leads Source"
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-API-Key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://farming-simulator.pstmn.io"
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api"
+		}
+	]
+}
