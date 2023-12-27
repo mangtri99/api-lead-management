@@ -23,30 +23,35 @@ class LeadController extends Controller
         $queryDateEnd = $request->date_end ? Carbon::parse($request->date_end)->endOfDay() : null;
 
         $leads = Lead::when($request->search, function ($query) use ($request) {
-            // Filter by search in fullname, email and lead number
-            $query->where('fullname', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%')
-                ->orWhere('lead_number', 'like', '%' . $request->search . '%');
-        })
+        // Filter by search in fullname, email and lead number
+        $query->where('fullname', 'like', '%' . $request->search . '%')
+            ->orWhere('email', 'like', '%' . $request->search . '%')
+            ->orWhere('lead_number', 'like', '%' . $request->search . '%');
         // filter by date range
-            ->when($queryDateStart && $queryDateEnd, function ($query) use ($queryDateStart, $queryDateEnd) {
-                $query->whereBetween('created_at', [$queryDateStart, $queryDateEnd]);
-            })
+        })->when($queryDateStart && $queryDateEnd, function ($query) use ($queryDateStart, $queryDateEnd) {
+            $query->whereBetween('created_at', [$queryDateStart, $queryDateEnd]);
+            // if only $queryDateStart
+        })->when($queryDateStart && !$queryDateEnd, function ($query) use ($queryDateStart) {
+            $query->where('created_at', '>=', $queryDateStart);
+            // if only $queryDateEnd
+        })->when(!$queryDateStart && $queryDateEnd, function ($query) use ($queryDateEnd) {
+            $query->where('created_at', '<=', $queryDateEnd);
+        })
         // filter by status
-            ->when($request->status, function ($query) use ($request) {
-                $query->where('status_id', $request->status);
-            })
+        ->when($request->status, function ($query) use ($request) {
+            $query->where('status_id', $request->status);
+        })
         // filter by branch
-            ->when($request->branch, function ($query) use ($request) {
-                $query->where('branch_id', $request->branch);
-            })
+        ->when($request->branch, function ($query) use ($request) {
+            $query->where('branch_id', $request->branch);
+        })
         // Handle sort and order query params
-            ->when($request->sort, function ($query) use ($request) {
-                $query->orderBy($request->sort, $request->order ?? 'asc'); // default order is asc
-            }, function ($query) {
-                // default sort by created_at in desc order
-                $query->orderBy('created_at', 'desc');
-            })->with([
+        ->when($request->sort, function ($query) use ($request) {
+            $query->orderBy($request->sort, $request->order ?? 'asc'); // default order is asc
+        }, function ($query) {
+        // default sort by created_at in desc order
+            $query->orderBy('created_at', 'desc');
+        })->with([
             'branch',
             'status',
             'probability',
@@ -54,7 +59,15 @@ class LeadController extends Controller
             'channel',
             'media',
             'source',
-        ])->paginate($perPage);
+        ]);
+
+        // if accept all request, return all leads
+        if ($request->all === true || $request->all === 'true') {
+            $leads = $leads->get();
+        // else return paginated leads
+        } else {
+            $leads = $leads->paginate($perPage);
+        }
 
         return SuccessResource::collection($leads);
     }
@@ -74,8 +87,9 @@ class LeadController extends Controller
             return new SuccessResource($lead);
         } catch (Exception $e) {
             return response()->json(
-                new ErrorResource($e)
-                , 500);
+                new ErrorResource($e),
+                500
+            );
         }
     }
 
@@ -97,8 +111,9 @@ class LeadController extends Controller
             return new SuccessResource($lead);
         } catch (Exception $e) {
             return response()->json(
-                new ErrorResource($e)
-                , 500);
+                new ErrorResource($e),
+                500
+            );
         }
     }
 
@@ -113,8 +128,9 @@ class LeadController extends Controller
             return new SuccessResource([]);
         } catch (Exception $e) {
             return response()->json(
-                new ErrorResource($e)
-                , 500);
+                new ErrorResource($e),
+                500
+            );
         }
     }
 
@@ -128,8 +144,9 @@ class LeadController extends Controller
             return new SuccessResource([]);
         } catch (Exception $e) {
             return response()->json(
-                new ErrorResource($e)
-                , 500);
+                new ErrorResource($e),
+                500
+            );
         }
     }
 }
