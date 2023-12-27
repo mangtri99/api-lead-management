@@ -9,9 +9,13 @@ use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $branches = Branch::with('leads')->get();
+        $branches = Branch::query();
+        if($request->leads == 'true' || $request->leads == true){
+            $branches->with('leads')->withCount('leads');
+        }
+        $branches = $branches->get();
 
         return SuccessResource::collection($branches);
     }

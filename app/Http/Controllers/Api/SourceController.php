@@ -11,7 +11,11 @@ class SourceController extends Controller
 {
     public function index(Request $request)
     {
-        $sources = Source::with('leads')->withCount('leads')->get();
+        $sources = Source::query();
+        if($request->leads == 'true' || $request->leads == true){
+            $sources->with('leads')->withCount('leads');
+        }
+        $sources = $sources->get();
 
         return SuccessResource::collection($sources);
     }

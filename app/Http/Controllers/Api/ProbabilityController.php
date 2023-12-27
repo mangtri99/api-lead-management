@@ -11,8 +11,13 @@ class ProbabilityController extends Controller
 {
     public function index(Request $request)
     {
-        $types = Probability::with('leads')->withCount('leads')->get();
+        $probabilities = Probability::query();
+        if($request->leads == 'true' || $request->leads == true){
+            $probabilities->with('leads')->withCount('leads');
+        }
 
-        return SuccessResource::collection($types);
+        $probabilities = $probabilities->get();
+
+        return SuccessResource::collection($probabilities);
     }
 }

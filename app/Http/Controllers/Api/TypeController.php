@@ -11,7 +11,11 @@ class TypeController extends Controller
 {
     public function index(Request $request)
     {
-        $types = Type::with('leads')->withCount('leads')->get();
+        $types = Type::query();
+        if($request->leads == 'true' || $request->leads == true){
+            $types->with('leads')->withCount('leads');
+        }
+        $types = $types->get();
 
         return SuccessResource::collection($types);
     }

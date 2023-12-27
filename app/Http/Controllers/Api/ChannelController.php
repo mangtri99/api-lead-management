@@ -12,9 +12,12 @@ class ChannelController extends Controller
 
     public function index(Request $request)
     {
-        $channels = Channel::with([
-            'medias.sources', 'leads',
-        ])->withCount('leads')->get();
+        $channels = Channel::query();
+        if($request->leads == 'true' || $request->leads == true){
+            $channels->with('leads')->withCount('leads');
+        }
+
+        $channels = $channels->get();
 
         return SuccessResource::collection($channels);
     }
